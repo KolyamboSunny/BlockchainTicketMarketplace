@@ -1,6 +1,5 @@
 pragma solidity ^0.5.2;
 
-import 'https://github.com/OpenZeppelin/openzeppelin-solidity/contracts/token/ERC721/ERC721Full.sol';
 import './Tickets.sol';
 
 contract Event{

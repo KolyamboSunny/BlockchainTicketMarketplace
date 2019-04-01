@@ -1,0 +1,9 @@
+{
+    "name": "wise_unicorn_tickets",
+    "version": "0.0.1",
+    "private": true,
+    "dependencies": {     
+      "ganache-cli": "^6.4.0",
+      "web3": "^1.0.0-beta.51"
+    }
+  }
