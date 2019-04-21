@@ -22,8 +22,7 @@ contract Tickets is ERC721{
     
     function addTicket(string memory _description) public{
         require(ParentEvent.released() == false,"Unable to add any tickets once the event is published");
-        require(msg.sender == ParentEvent.organizer(), "Only event organizer may add tickets.");
-        //require(msg.sender == address(ParentEvent), "Tokens can not be created from an external entity");
+        require(msg.sender == ParentEvent.organizer(), "Only event organizer may add tickets.");        
         uint256 ticketId = uint256(keccak256(abi.encode(ParentEvent,_description)));
         
         TicketData[ticketId] = Ticket(_description, address(0));
@@ -44,14 +43,13 @@ contract Tickets is ERC721{
         approve(address(0), ticketId);
     }
     
-    function isRedeemed(uint256 ticketId) public returns(bool){
+    function isRedeemed(uint256 ticketId) view public returns(bool){
         return TicketData[ticketId].redeemedBy != address(0);
     }
     
     function redeem(uint256 ticketId) public {
         require(msg.sender == ownerOf(ticketId), "Only ticket owner can redeem the ticket");
-        require(getApproved(ticketId) == address(0), "Ticket should not be published on market");
-        
+        require(getApproved(ticketId) == address(0), "Ticket should not be published on market");        
         require (isRedeemed(ticketId) == false, "Same ticket can not be used twice");
         safeTransferFrom(msg.sender, address(ParentEvent), ticketId);
         TicketData[ticketId].redeemedBy = msg.sender;

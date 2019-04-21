@@ -49,6 +49,9 @@ contract Event{
         Tickets tickets = Tickets(ticketStorage);
         return tickets.getApproved(ticketId)==address(this);
     }
+    function getTicketPrice(uint256 ticketId) view public ticketOnSale(ticketId) returns(uint){                
+        return TicketPrices[ticketId];
+    }
     
     function buyTicket(uint256 ticketId) payable eventReleased ticketOnSale(ticketId) public{
         require( TicketPrices[ticketId] <= msg.value, "Not enough money.");
@@ -59,7 +62,7 @@ contract Event{
         tickets.safeTransferFrom(seller, msg.sender, ticketId);
     }
     
-    function getMyBalance(uint256 ticketId) public returns(uint){
+    function getMyBalance() view public returns(uint){
         return Balances[msg.sender];
     }
     
