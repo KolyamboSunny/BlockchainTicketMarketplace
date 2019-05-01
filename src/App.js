@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { Menu , Container } from 'semantic-ui-react';
+
 import CreateEvent from "./CreateEvent";
+import EventData from './EventData';
 
 class App extends Component {
     state = {
@@ -13,11 +15,14 @@ class App extends Component {
 
       render() {
         const { activeItem } = this.state
+
         let body = null;
         if(activeItem==='createEvent')
           body=<CreateEvent />
-        else
-          body = activeItem
+        else if(activeItem==='eventlist')
+          body=<EventData eventContractAddress="0xe7200EC658129cb25110ca7eDAe1e1E838c9e31F"/>
+        //body = activeItem
+
         return (
             <Container>
           <Menu>
@@ -30,11 +35,11 @@ class App extends Component {
             </Menu.Item>
     
             <Menu.Item 
-              name='reviews' 
-              active={activeItem === 'reviews'} 
+              name='eventlist' 
+              active={activeItem === 'eventlist'} 
               onClick={this.handleMenuClick}>
 
-              Reviews
+              View Event
             </Menu.Item>
     
             <Menu.Item

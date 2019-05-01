@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { Input, Container, Button } from 'semantic-ui-react';
 import web3Handler from './web3';
-import EventData from './EventData'
 
 class CreateEvent extends Component {
   state = {
@@ -42,7 +41,7 @@ class CreateEvent extends Component {
 
     const linkedPool = await EventInstance.methods.ticketStorage().call()
     console.log("Event was linked to: "+linkedPool)
-    const assert = require('assert')
+    
     if (linkedPool === this.state.ticketContractAddress){
       console.log("Ticket pool successfully linked")
       this.setState({status:"success"})
@@ -60,14 +59,10 @@ class CreateEvent extends Component {
     });
   };
   createEventContract = () => {    
-    this.deploy(this.state.eventName);
     this.setState({status:"creating"})
+    this.deploy(this.state.eventName);
   };
-
   
-
-  
-
   render() {
     if(this.state.eventContractAddress!=="")
     return (
@@ -85,6 +80,8 @@ class CreateEvent extends Component {
         <Input focus onChange={this.inputTextChanged.bind(this)} placeholder='Event name:' />
         <br/>
         <Button color='green' onClick={this.createEventContract} >Create</Button>
+        <br/>
+        <p>Event contract address: {this.state.eventContractAddress!=="" && this.state.status==="success"? this.state.eventContractAddress :null}</p> 
       </Container>
     );
   }
