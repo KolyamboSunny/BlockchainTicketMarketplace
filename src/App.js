@@ -4,26 +4,31 @@ import { Menu , Container } from 'semantic-ui-react';
 import CreateEvent from "./CreateEvent";
 import MyTickets from './MyTickets';
 import EventList from './EventList';
+import BuyTickets from './BuyTickets';
 
 class App extends Component {
     state = {
-        activeItem: "eventlist"
+        activeItem: "eventlist",
+        eventToBuy: "",
+        body:[null]
       };
     
-      handleMenuClick = (e, { name }) => this.setState({ activeItem: name })
-      
+      handleMenuClick = (e, { name }) => this.setState({ activeItem: name})
+      buyTickets =(eventAddress) => this.setState({activeItem:"buyTickets", eventToBuy: eventAddress })
       
 
       render() {
-        const { activeItem } = this.state
-
-        let body = null;
+        const { activeItem } = this.state        
+       
         if(activeItem==='createEvent')
-          body=<CreateEvent />
+          this.state.body[0]=<CreateEvent />
         else if(activeItem==='eventlist')
-          body = <EventList/>
+          this.state.body[0] = <EventList appBody={this.buyTickets}/>
         else if(activeItem==='mytickets')
-          body = <MyTickets/>
+          this.state.body[0] = <MyTickets/>
+          else if(activeItem==='buyTickets')
+          this.state.body[0] = <BuyTickets eventToBuy={this.state.eventToBuy}/>
+
         return (
             <Container>
           <Menu>
@@ -52,7 +57,7 @@ class App extends Component {
             </Menu.Item>
           </Menu>
           <Container>
-            {body}         
+            {this.state.body[0]}         
           </Container>
         </Container>
         );

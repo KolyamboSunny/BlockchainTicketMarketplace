@@ -6,6 +6,7 @@ import EventEdit from "./EventEdit";
 
 import EventManager from "./EventManager";
 
+
 export default class EventList extends Component {
   
   state = {
@@ -47,7 +48,7 @@ export default class EventList extends Component {
             </Card.Content>
             <Card.Content extra>
               {released? 
-                <Button basic color='green'>
+                <Button basic color='green' onClick = {e => this.onEventBuy(eventAddress)}>
                   Buy Tickets
                 </Button>
               :null}
@@ -69,6 +70,9 @@ export default class EventList extends Component {
   getEventName =async ()=>{
       const eventName = await this.state.eventContract.methods.eventName().call();            
       return eventName;
+  }
+  onEventBuy = (eventAddress)=>{
+    this.props.appBody(eventAddress)
   }
 
   render() {
