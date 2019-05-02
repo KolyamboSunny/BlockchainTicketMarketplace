@@ -2,7 +2,9 @@ import React, { Component } from "react";
 import { Container } from "semantic-ui-react";
 import web3Handler from "./web3";
 
-export default class EventData extends Component {
+import SeatRowCreator from "./SeatRowCreator";
+
+export default class EventEdit extends Component {
   
   state = {
     contractDataFetched: false,
@@ -13,6 +15,7 @@ export default class EventData extends Component {
   componentDidMount(){
     this.getContractData();
   }
+
   getContractData = async()=>{
     var compiledContract = require("./build/contracts/Event.json");   
     
@@ -21,15 +24,13 @@ export default class EventData extends Component {
     )});
     //console.log(this.state.eventContract);
 
-    await this.getEventName();
+    this.setState({eventName: await this.getEventName()});
 
     this.setState({contractDataFetched: true});
   }
 
   getEventName =async ()=>{
-      const eventName = await this.state.eventContract.methods.eventName().call();
-      this.setState({eventName: eventName})
-      console.log("Event name: "+this.state.eventName);
+      const eventName = await this.state.eventContract.methods.eventName().call();            
       return eventName;
   }
 
@@ -38,6 +39,7 @@ export default class EventData extends Component {
     return (
       <Container>
         <h1>{this.state.eventName}</h1>
+        <SeatRowCreator numRows={2} numSeats={3}/>
       </Container>
     );      
   }

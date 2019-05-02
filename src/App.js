@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import { Menu , Container } from 'semantic-ui-react';
 
 import CreateEvent from "./CreateEvent";
-import EventData from './EventData';
+import EventEdit from './EventEdit';
+import EventList from './EventList';
 
 class App extends Component {
     state = {
@@ -20,7 +21,9 @@ class App extends Component {
         if(activeItem==='createEvent')
           body=<CreateEvent />
         else if(activeItem==='eventlist')
-          body=<EventData eventContractAddress="0xe7200EC658129cb25110ca7eDAe1e1E838c9e31F"/>
+          body = <EventList/>
+         // body=<EventEdit eventContractAddress="0xe7200EC658129cb25110ca7eDAe1e1E838c9e31F"/>
+       // else if(activeItem==='eventlist')
         //body = activeItem
 
         return (
