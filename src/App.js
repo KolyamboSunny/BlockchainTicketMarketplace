@@ -42,7 +42,7 @@ class App extends Component {
               active={activeItem === 'eventlist'} 
               onClick={this.handleMenuClick}>
 
-              View Event
+              Event List
             </Menu.Item>
     
             <Menu.Item

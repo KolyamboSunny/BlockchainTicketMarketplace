@@ -19,7 +19,7 @@ contract Tickets is ERC721{
     constructor(Event _eventAddress) public{
         ParentEvent = _eventAddress;
     }
-    
+    //function createDefaultTickets(uint memory rows, uint memory seatsPerRow)
     function addTicket(string memory _description) public{
         require(ParentEvent.released() == false,"Unable to add any tickets once the event is published");
         require(msg.sender == ParentEvent.organizer(), "Only event organizer may add tickets.");        

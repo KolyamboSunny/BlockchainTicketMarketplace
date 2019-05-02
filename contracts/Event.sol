@@ -11,7 +11,7 @@ contract Event{
         _;
     }
     modifier isOrganizer() {
-        require(msg.sender == organizer,"Only event organizer allowed to do that");
+        require(msg.sender == organizer || msg.sender == organizer_contract ,"Only event organizer allowed to do that");
         _;
     }
     modifier ticketOnSale(uint256 ticketId) {
@@ -23,11 +23,13 @@ contract Event{
     mapping(uint256 => uint) TicketPrices;
     
     address public organizer;
+    address public organizer_contract;
     mapping(address => uint) Balances;
     
-    constructor (string memory _eventName) public{
+    constructor (string memory _eventName, address _organizer) public{
         eventName = _eventName;
-        organizer = msg.sender;
+        organizer = _organizer;
+        organizer_contract = msg.sender;
     }
     function linkTicketPool(address _ticketStorage) isOrganizer public{
         require(address(ticketStorage)==address(0), "Ticket storage was already linked.");
