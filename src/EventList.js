@@ -2,13 +2,16 @@ import React, { Component } from "react";
 import { Container, Button, Card, CardGroup } from "semantic-ui-react";
 import web3Handler from "./web3";
 
+import EventEdit from "./EventEdit";
+
 import EventManager from "./EventManager";
 
 export default class EventList extends Component {
   
   state = {
     events:[],
-    dataFetched:false
+    dataFetched:false,
+    eventToEdit:""
   };
   componentDidMount(){
     this.getAllEvents();
@@ -49,7 +52,7 @@ export default class EventList extends Component {
                 </Button>
               :null}
               {currentAccount===eventOrganizer && !released? 
-                <Button basic color='grey'>
+                <Button basic color='grey' onClick = {e => this.onEventEdit(eventAddress)}>
                   Edit
                 </Button>
               :null}
@@ -59,7 +62,10 @@ export default class EventList extends Component {
     }
     this.setState({dataFetched: true});
   }
-
+  onEventEdit = (address)=>{
+    console.log("Event to edit: "+address)
+    this.setState({eventToEdit: address})
+  }
   getEventName =async ()=>{
       const eventName = await this.state.eventContract.methods.eventName().call();            
       return eventName;
@@ -68,9 +74,12 @@ export default class EventList extends Component {
   render() {
     if (this.state.dataFetched )
       return (
-        <CardGroup>
-          {this.state.events}
-        </CardGroup>
+        <Container>
+          <CardGroup>
+            {this.state.events}
+          </CardGroup>
+          {this.state.eventToEdit===""?null:<EventEdit eventContractAddress = {this.state.eventToEdit}/>}
+        </Container>
       ); 
     else
       return (

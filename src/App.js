@@ -7,7 +7,7 @@ import EventList from './EventList';
 
 class App extends Component {
     state = {
-        
+        activeItem: "eventlist"
       };
     
       handleMenuClick = (e, { name }) => this.setState({ activeItem: name })

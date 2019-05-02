@@ -28,11 +28,6 @@ class CreateEvent extends Component {
     }
   };
   
-  createTickets=(numRows,numSeats)=>{
-
-  }
-
-
   render() {
     if(this.state.status!=="success")
       return (
@@ -50,20 +45,9 @@ class CreateEvent extends Component {
     else
       return (
         <Container>
-          <h1>Create your own event</h1><br/>                
+          <h1>Event successfully created!</h1><br/>                
           <p>Event contract address: {this.state.eventContractAddress!=="" && this.state.status==="success"? this.state.eventContractAddress :null}</p> 
-          <Form onSubmit={this.onSubmit} error={!!this.state.errorMessage}>
-            <Form.Field>
-              <Input label="Rows" onChange={event => this.setState({ rows: event.target.value })}/>
-            </Form.Field>
-            <Form.Field>
-              <Input label="Seats per Row"/>
-            </Form.Field>                        
-            <Button primary type="submit" loading={this.state.loading}>
-              <Icon name="check" />
-              Create tickets
-            </Button>          
-            </Form>
+          
         </Container>
       );
   }
