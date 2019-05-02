@@ -20,11 +20,11 @@ contract Event{
     }
     
     Tickets public ticketStorage;
-    mapping(uint256 => uint) TicketPrices;
+    mapping(uint256 => uint256) TicketPrices;
     
     address public organizer;
     address public organizer_contract;
-    mapping(address => uint) Balances;
+    mapping(address => uint256) Balances;
     
     constructor (string memory _eventName, address _organizer) public{
         eventName = _eventName;
@@ -42,7 +42,7 @@ contract Event{
     }
     
     
-    function sellTicket(uint256 ticketId, uint price) eventReleased public{
+    function sellTicket(uint256 ticketId, uint256 price) eventReleased public{
         require(ticketIsOnSale(ticketId),"Contract does not have rights to sell a ticket");
         TicketPrices[ticketId] = price;
     }
@@ -51,7 +51,7 @@ contract Event{
         Tickets tickets = Tickets(ticketStorage);
         return tickets.getApproved(ticketId)==address(this);
     }
-    function getTicketPrice(uint256 ticketId) view public ticketOnSale(ticketId) returns(uint){                
+    function getTicketPrice(uint256 ticketId) view public ticketOnSale(ticketId) returns(uint256){                
         return TicketPrices[ticketId];
     }
     
@@ -64,12 +64,12 @@ contract Event{
         tickets.safeTransferFrom(seller, msg.sender, ticketId);
     }
     
-    function getMyBalance() view public returns(uint){
+    function getMyBalance() view public returns(uint256){
         return Balances[msg.sender];
     }
     
     function withdraw() public {
-        uint toTransfer = Balances[msg.sender];
+        uint256 toTransfer = Balances[msg.sender];
         Balances[msg.sender] =0;
         msg.sender.transfer(toTransfer);
     }

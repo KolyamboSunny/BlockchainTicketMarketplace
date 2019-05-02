@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Menu , Container } from 'semantic-ui-react';
 
 import CreateEvent from "./CreateEvent";
-import EventEdit from './EventEdit';
+import MyTickets from './MyTickets';
 import EventList from './EventList';
 
 class App extends Component {
@@ -22,10 +22,8 @@ class App extends Component {
           body=<CreateEvent />
         else if(activeItem==='eventlist')
           body = <EventList/>
-         // body=<EventEdit eventContractAddress="0xe7200EC658129cb25110ca7eDAe1e1E838c9e31F"/>
-       // else if(activeItem==='eventlist')
-        //body = activeItem
-
+        else if(activeItem==='mytickets')
+          body = <MyTickets/>
         return (
             <Container>
           <Menu>
@@ -46,11 +44,11 @@ class App extends Component {
             </Menu.Item>
     
             <Menu.Item
-              name='upcomingEvents'
-              active={activeItem === 'upcomingEvents'}
+              name='mytickets'
+              active={activeItem === 'mytickets'}
               onClick={this.handleMenuClick}
             >
-              Upcoming Events
+              My Tickets
             </Menu.Item>
           </Menu>
           <Container>

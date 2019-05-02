@@ -1,6 +1,6 @@
 import web3Handler from "./web3";
 
-const instanceAddress = "0x23e73B2909F3E54E18d91d7Db5aa278e97bB4e8b";
+const instanceAddress = "0x2971820Ff1aE1cCFE822503797De9d8c4Eb7E6BB";
 const compiledEventManager = require("./build/contracts/EventManager.json");
 const contractInstance = new web3Handler.eth.Contract(compiledEventManager.abi, instanceAddress);
 

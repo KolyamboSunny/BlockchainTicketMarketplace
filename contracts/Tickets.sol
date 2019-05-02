@@ -19,6 +19,29 @@ contract Tickets is ERC721{
     constructor(Event _eventAddress) public{
         ParentEvent = _eventAddress;
     }
+
+    function ticketsOfOwner(address _owner) public view returns(uint256[] memory) {
+        uint256 ticketCount = balanceOf(_owner);
+
+        if (ticketCount == 0) {
+            return new uint256[](0);
+        } 
+        else {
+            uint256[] memory result = new uint256[](ticketCount);
+            uint256 result_i = 0;
+
+            for (uint256 i = 0; i < numberOfTickets; i++) {
+                uint256 ticketId =TicketIds[i];
+                if (ownerOf(ticketId) == _owner) {
+                    result[result_i] = ticketId;
+                    result_i++;
+                }
+            }
+
+            return result;
+        }
+    }
+
     function concat(string memory first, string memory second) pure private returns (string memory) {
         bytes memory _first = bytes(first);
         bytes memory _second = bytes(second);
@@ -54,12 +77,12 @@ contract Tickets is ERC721{
 
     function createDefaultTickets(uint rows, uint seatsPerRow) public{
         for(uint row=1; row<=rows; row++){
-            string memory description = "row ";
-            description = concat(description,uint2str(row));
+            string memory descriptionRow = "row ";
+            descriptionRow = concat(descriptionRow,uint2str(row));
+
             for(uint seat=1; seat<=seatsPerRow; seat++){
-               description = concat(description," seat ");
-               description = concat(description,uint2str(seat));
-               addTicket(description);
+                string memory description = concat(descriptionRow," seat ");
+                addTicket(concat(description,uint2str(seat)));
             }
         }
     }
@@ -74,7 +97,7 @@ contract Tickets is ERC721{
         numberOfTickets += 1;
     }
     
-    function publishOnMarket(uint256 ticketId, uint price) public{
+    function publishOnMarket(uint256 ticketId, uint256 price) public{
         require (ownerOf(ticketId) == msg.sender, "Only the owner can send a ticket");
         require (isRedeemed(ticketId) == false, "Used ticket cannot be sold");
         approve(address(ParentEvent), ticketId);
