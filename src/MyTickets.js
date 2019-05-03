@@ -33,7 +33,9 @@ export default class MyTickets extends Component {
         const userTickets = await ticketInstance.methods.ticketsOfOwner(currentAccount).call();
         
         console.log(userTickets)
-        userTickets.forEach(async(ticketId) => {
+
+        for(var i=0;i<userTickets.length;i++){
+          const ticketId = userTickets[i]
           const ticketData = await ticketInstance.methods.TicketData(ticketId).call();
           console.log(ticketData['description']);
           const ticketRedeemed = await ticketInstance.methods.isRedeemed(ticketId).call();
@@ -55,7 +57,7 @@ export default class MyTickets extends Component {
               </List.Content>
             </List.Item>  
           );
-        });
+        }
     }
     this.setState({dataFetched: true});
   }
