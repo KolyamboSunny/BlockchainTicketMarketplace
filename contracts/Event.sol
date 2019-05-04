@@ -11,7 +11,7 @@ contract Event{
         _;
     }
     modifier isOrganizer() {
-        require(msg.sender == organizer,"Only event organizer allowed to do that");
+        require(msg.sender == organizer || msg.sender == organizer_contract ,"Only event organizer allowed to do that");
         _;
     }
     modifier ticketOnSale(uint256 ticketId) {
@@ -20,14 +20,16 @@ contract Event{
     }
     
     Tickets public ticketStorage;
-    mapping(uint256 => uint) TicketPrices;
+    mapping(uint256 => uint256) TicketPrices;
     
     address public organizer;
-    mapping(address => uint) Balances;
+    address public organizer_contract;
+    mapping(address => uint256) Balances;
     
-    constructor (string memory _eventName) public{
+    constructor (string memory _eventName, address _organizer) public{
         eventName = _eventName;
-        organizer = msg.sender;
+        organizer = _organizer;
+        organizer_contract = msg.sender;
     }
     function linkTicketPool(address _ticketStorage) isOrganizer public{
         require(address(ticketStorage)==address(0), "Ticket storage was already linked.");
@@ -40,7 +42,7 @@ contract Event{
     }
     
     
-    function sellTicket(uint256 ticketId, uint price) eventReleased public{
+    function sellTicket(uint256 ticketId, uint256 price) eventReleased public{
         require(ticketIsOnSale(ticketId),"Contract does not have rights to sell a ticket");
         TicketPrices[ticketId] = price;
     }
@@ -48,6 +50,9 @@ contract Event{
     function ticketIsOnSale(uint256 ticketId) view public returns(bool){
         Tickets tickets = Tickets(ticketStorage);
         return tickets.getApproved(ticketId)==address(this);
+    }
+    function getTicketPrice(uint256 ticketId) view public ticketOnSale(ticketId) returns(uint256){                
+        return TicketPrices[ticketId];
     }
     
     function buyTicket(uint256 ticketId) payable eventReleased ticketOnSale(ticketId) public{
@@ -59,12 +64,12 @@ contract Event{
         tickets.safeTransferFrom(seller, msg.sender, ticketId);
     }
     
-    function getMyBalance(uint256 ticketId) public returns(uint){
+    function getMyBalance() view public returns(uint256){
         return Balances[msg.sender];
     }
     
     function withdraw() public {
-        uint toTransfer = Balances[msg.sender];
+        uint256 toTransfer = Balances[msg.sender];
         Balances[msg.sender] =0;
         msg.sender.transfer(toTransfer);
     }
